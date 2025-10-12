@@ -1,0 +1,10 @@
+# ROS2 workspace build artifacts
+build/
+install/
+log/
+.colcon_release_metadata/
+*.pyc
+__pycache__/
+.env
+.vscode/
+.idea/
