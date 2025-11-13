@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<robot name="nova_bot" xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+<!-- Body Dimension -->
+<xacro:porperty name="body_link_x_dim" value="0.4"/>
+<xacro:porperty name="body_link_y_dim" value="0.5"/>
+<xacro:porperty name="body_link_z_dim" value="0.3"/>
+
+<!-- Wheel Dimension -->
+<xacro:porperty name="wheel_link_radius" value="0.1016"/>
+<xacro:porperty name="wheel_link_length" value="0.1"/>
+<xacro:porperty name="wheel_link_z_location" value="-0.1"/>
+
+<!-- Caster1 Dimension -->
+<xacro:porperty name="caster1_link_radius" value="0.15"/>
+<xacro:porperty name="caster1_link_z_location" value="-0.1"/>
+
+<!-- Caster2 Dimension -->
+<xacro:porperty name="caster2_link_radius" value="0.15"/>
+<xacro:porperty name="caster2_link_z_location" value="-0.1"/>
+
+<!-- Material Density -->
+<xacro:porperty name="body_link_x_dim" value="0.4"/>
+<xacro:porperty name="body_link_y_dim" value="0.5"/>
+<xacro:porperty name="body_link_z_dim" value="0.3"/>

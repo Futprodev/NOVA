@@ -60,41 +60,28 @@
         izz="0.00037661" />
     </inertial>
     <visual>
-      <origin
-        xyz="0 0 0"
-        rpy="0 0 0" />
-      <geometry>
-        <mesh
-          filename="file:///home/maul/ws_nova/src/nova_arm/meshes/Link_1.STL" />
-      </geometry>
-      <material
-        name="">
-        <color
-          rgba="0.79216 0.81961 0.93333 1" />
-      </material>
+      <origin xyz="0 0 0" rpy="1.5708 0 1.5708"/>
+      <geometry><mesh filename="file:///home/maul/ws_nova/src/nova_arm/meshes/Link_1.STL"/></geometry>
+      <material name=""><color rgba="0.79216 0.81961 0.93333 1"/></material>
     </visual>
+
     <collision>
-      <origin
-        xyz="0 0 0"
-        rpy="0 0 0" />
-      <geometry>
-        <mesh
-          filename="file:///home/maul/ws_nova/src/nova_arm/meshes/Link_1.STL" />
-      </geometry>
+      <origin xyz="0 0 0" rpy="1.5708 0 1.5708"/>
+      <geometry><mesh filename="file:///home/maul/ws_nova/src/nova_arm/meshes/Link_1.STL"/></geometry>
     </collision>
   </link>
   <joint
     name="joint_1"
     type="revolute">
     <origin
-      xyz="0 0  0.065125"
-      rpy="1.5708 0 0.0056739" />
+      xyz="0 0  0.085"
+      rpy="0 0 0" />
     <parent
       link="base_link" />
     <child
       link="Link_1" />
     <axis
-      xyz="0 1 0" />
+      xyz="0 0 1" />
     <limit
       lower="-3.1416"
       upper="3.1416"
@@ -118,41 +105,28 @@
         izz="0.00062811" />
     </inertial>
     <visual>
-      <origin
-        xyz="0 0 0"
-        rpy="0 0 0" />
-      <geometry>
-        <mesh
-          filename="file:///home/maul/ws_nova/src/nova_arm/meshes/Link_2.STL" />
-      </geometry>
-      <material
-        name="">
-        <color
-          rgba="0.79216 0.81961 0.93333 1" />
-      </material>
+      <origin xyz="0 0 0" rpy="1.5708 0 -1.5708"/>
+      <geometry><mesh filename="file:///home/maul/ws_nova/src/nova_arm/meshes/Link_2.STL"/></geometry>
+      <material name=""><color rgba="0.79216 0.81961 0.93333 1"/></material>
     </visual>
+
     <collision>
-      <origin
-        xyz="0 0 0"
-        rpy="0 0 0" />
-      <geometry>
-        <mesh
-          filename="file:///home/maul/ws_nova/src/nova_arm/meshes/Link_2.STL" />
-      </geometry>
+      <origin xyz="0 0 0" rpy="1.5708 0 -1.5708"/>
+      <geometry><mesh filename="file:///home/maul/ws_nova/src/nova_arm/meshes/Link_2.STL"/></geometry>
     </collision>
   </link>
   <joint
     name="joint_2"
     type="revolute">
     <origin
-      xyz="0 0.066 0"
-      rpy="1.5708 0 0" />
+      xyz="0 0 0.066"
+      rpy="0 -1.5708 0" />
     <parent
       link="Link_1" />
     <child
       link="Link_2" />
     <axis
-      xyz="0 1 0" />
+      xyz="0 0 1" />
     <limit
       lower="-1.5708"
       upper="1.5708"
@@ -176,44 +150,31 @@
         izz="0.00087188" />
     </inertial>
     <visual>
-      <origin
-        xyz="0 0 0"
-        rpy="0 0 0" />
-      <geometry>
-        <mesh
-          filename="file:///home/maul/ws_nova/src/nova_arm/meshes/Link_3.STL" />
-      </geometry>
-      <material
-        name="">
-        <color
-          rgba="0.79216 0.81961 0.93333 1" />
-      </material>
+      <origin xyz="0 0 0" rpy="1.5708  0 0"/>
+      <geometry><mesh filename="file:///home/maul/ws_nova/src/nova_arm/meshes/Link_3.STL"/></geometry>
+      <material name=""><color rgba="0.79216 0.81961 0.93333 1"/></material>
     </visual>
+
     <collision>
-      <origin
-        xyz="0 0 0"
-        rpy="0 0 0" />
-      <geometry>
-        <mesh
-          filename="file:///home/maul/ws_nova/src/nova_arm/meshes/Link_3.STL" />
-      </geometry>
+      <origin xyz="0 0 0" rpy="1.5708  0 0"/>
+      <geometry><mesh filename="file:///home/maul/ws_nova/src/nova_arm/meshes/Link_3.STL"/></geometry>
     </collision>
   </link>
   <joint
     name="joint_3"
     type="revolute">
     <origin
-      xyz="0 0 -0.2"
-      rpy="3.1416 0 3.1416" />
+      xyz="0.20 0 0" 
+      rpy="0 0 0"/>  
     <parent
       link="Link_2" />
     <child
       link="Link_3" />
     <axis
-      xyz="0 1 0" />
+      xyz="0 0 1" />
     <limit
-      lower="-4.0"
-      upper="0.9"
+      lower="-2.332"
+      upper="2.332"
       effort="10"
       velocity="1.5" />
   </joint>
@@ -268,10 +229,10 @@
     <child
       link="Link_4" />
     <axis
-      xyz="0 0 0" />
+      xyz="-1 0 0" />
     <limit
       lower="0"
-      upper="0.03"
+      upper="0.014"
       effort="50"
       velocity="0.02" />
   </joint>
@@ -326,11 +287,52 @@
     <child
       link="Link_5" />
     <axis
-      xyz="0 0 0" />
+      xyz=" 1 0 0" />
     <limit
-      lower="-0.03"
+      lower="-0.014"
       upper="0"
       effort="50"
       velocity="0.02" />
   </joint>
+
+    <ros2_control name="nova_arm_system" type="system">
+    <hardware>
+      <!-- Choose ONE of these depending on how you run: -->
+
+      <!-- SIM WITH GZ (Gazebo Harmonic/Garden): use gz_ros2_control -->
+      <!-- This hardware is provided by the simulator through the gz plugin. -->
+      <plugin>gz_ros2_control/GazeboSystem</plugin>
+
+      <!-- OR: TEMP FAKE HARDWARE for RViz-only testing (if you don't use GZ yet)
+      <plugin>mock_components/GenericSystem</plugin>
+      -->
+    </hardware>
+
+    <joint name="joint_1">
+      <command_interface name="position"/>
+      <state_interface name="position"/>
+      <state_interface name="velocity"/>
+    </joint>
+    <joint name="joint_2">
+      <command_interface name="position"/>
+      <state_interface name="position"/>
+      <state_interface name="velocity"/>
+    </joint>
+    <joint name="joint_3">
+      <command_interface name="position"/>
+      <state_interface name="position"/>
+      <state_interface name="velocity"/>
+    </joint>
+    <joint name="joint_4">
+      <command_interface name="position"/>
+      <state_interface name="position"/>
+      <state_interface name="velocity"/>
+    </joint>
+    <joint name="joint_5">
+      <command_interface name="position"/>
+      <state_interface name="position"/>
+      <state_interface name="velocity"/>
+    </joint>
+  </ros2_control>
+
 </robot>

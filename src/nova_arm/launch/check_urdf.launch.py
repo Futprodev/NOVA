@@ -1,17 +1,16 @@
+from launch import LaunchDescription
+from launch.actions import DeclareLaunchArgument
+from launch.substitutions import LaunchConfiguration
+from launch_ros.actions import Node
 import os
 from pathlib import Path
 from ament_index_python.packages import get_package_share_directory
-from launch import LaunchDescription
-from launch.substitutions import LaunchConfiguration
-from launch.actions import DeclareLaunchArgument
-from launch_ros.actions import Node
 
 def generate_launch_description():
     use_sim_time = LaunchConfiguration('use_sim_time')
 
     pkg_path = get_package_share_directory('nova_arm')
-    # Point to whichever you actually have:
-    model_path = os.path.join(pkg_path, 'urdf', 'nova_arm.urdf')  # or robot.urdf.xacro
+    model_path = os.path.join(pkg_path, 'urdf', 'nova_arm.urdf')
 
     ext = Path(model_path).suffix.lower()
     if ext == '.xacro':
@@ -23,14 +22,26 @@ def generate_launch_description():
 
     params = {'robot_description': urdf_xml, 'use_sim_time': use_sim_time}
 
-    node_robot_state_publisher = Node(
-        package='robot_state_publisher',
-        executable='robot_state_publisher',
-        output='screen',
-        parameters=[params],
-    )
-
     return LaunchDescription([
-        DeclareLaunchArgument('use_sim_time', default_value='false', description='Use sim time if true'),
-        node_robot_state_publisher
+        DeclareLaunchArgument('use_sim_time', default_value='false'),
+        Node(
+            package='robot_state_publisher',
+            executable='robot_state_publisher',
+            output='screen',
+            parameters=[params],
+        ),
+        Node(
+            package='nova_arm_kinematics',
+            executable='ik_rviz_node',
+            name='nova_arm_planar_ik_rviz',
+            parameters=[{
+                'L1': 0.066,      # TODO: set your real shoulder->elbow distance
+                'L2': 0.200,
+                'L3': 0.17556,
+                'joint_names': ['joint_1','joint_2','joint_3','joint_4','joint_5'],
+            }],
+            output='screen'
+        ),
+        # Optional: start RViz with RobotModel + TF + JointState
+        # Node(package='rviz2', executable='rviz2', arguments=['-d', os.path.join(pkg_path,'config','rviz_nova_arm.rviz')])
     ])
