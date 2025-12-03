@@ -17,8 +17,8 @@ setup(
     ],
     install_requires=['setuptools'],
     zip_safe=True,
-    maintainer='you',
-    maintainer_email='you@example.com',
+    maintainer='Maulana Muammar',
+    maintainer_email='maulana.muammar@binus.ac.id',
     description='Nova arm URDF + launch',
     license='MIT',
 )

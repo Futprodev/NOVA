@@ -1,0 +1,652 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- This URDF was automatically created by SolidWorks to URDF Exporter! Originally created by Stephen Brawner (brawner@gmail.com) 
+     Commit Version: 1.6.0-4-g7f85cfe  Build Version: 1.6.7995.38578
+     For more information, please see http://wiki.ros.org/sw_urdf_exporter -->
+<robot
+  name="nova_nav">
+  <link name="base_footprint"/>
+  <joint name="base_footprint_to_base_link" type="fixed">
+    <origin xyz="0 0 0.20" rpy="1.5708 0 0"/>
+    <parent link="base_footprint"/>
+    <child link="base_link"/>
+  </joint>
+  <link
+    name="base_link">
+    <inertial>
+      <origin
+        xyz="-0.000348090209876452 -0.0748795009172863 -9.35843189910264E-06"
+        rpy="0 0 0" />
+      <mass
+        value="3.65195395442474" />
+      <inertia
+        ixx="0.0830856808237229"
+        ixy="1.37041419075526E-07"
+        ixz="3.71835172364014E-07"
+        iyy="0.180243025087059"
+        iyz="1.03107156925548E-07"
+        izz="0.12308843566881" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://nova_nav/meshes/base_link.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="1 1 1 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://nova_nav/meshes/base_link.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <link
+    name="KIRI_UTAMA">
+    <inertial>
+      <origin
+        xyz="-7.46035397979072E-07 4.81849486815011E-06 -0.0331497387034927"
+        rpy="0 0 0" />
+      <mass
+        value="1.43144480602326" />
+      <inertia
+        ixx="0.00331965929071568"
+        ixy="-5.23867245849175E-09"
+        ixz="-5.91992287262301E-08"
+        iyy="0.00331969480552574"
+        iyz="3.8563873495661E-07"
+        izz="0.00595557900945916" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://nova_nav/meshes/KIRI_UTAMA.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="1 1 1 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://nova_nav/meshes/KIRI_UTAMA.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="KITI UTAMA"
+    type="continuous">
+    <origin
+      xyz="-0.0015818 -0.1135 -0.19675"
+      rpy="3.1416 0 0" />
+    <parent
+      link="base_link" />
+    <child
+      link="KIRI_UTAMA" />
+    <axis
+      xyz="0 0 1" />
+    <limit
+      effort="50"
+      velocity="50" />
+    <dynamics
+      damping="0.5"
+      friction="0.5" />
+  </joint>
+  <link
+    name="KANAN_UTAMA">
+    <inertial>
+      <origin
+        xyz="7.37719561445804E-07 -4.8197736636506E-06 0.0331497385495518"
+        rpy="0 0 0" />
+      <mass
+        value="1.43144520608886" />
+      <inertia
+        ixx="0.00331965941926116"
+        ixy="-5.5295326770335E-09"
+        ixz="-5.9526658072244E-08"
+        iyy="0.00331969273741215"
+        iyz="3.85588328041861E-07"
+        izz="0.00595557706241427" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://nova_nav/meshes/KANAN_UTAMA.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="1 1 1 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://nova_nav/meshes/KANAN_UTAMA.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="KANAN_UTAMA"
+    type="continuous">
+    <origin
+      xyz="-0.0015818 -0.1135 0.1959"
+      rpy="3.1416 0 0" />
+    <parent
+      link="base_link" />
+    <child
+      link="KANAN_UTAMA" />
+    <axis
+      xyz="0 -1 0" />
+    <limit
+      effort="50"
+      velocity="50" />
+    <dynamics
+      damping="0.5"
+      friction="0.5" />
+  </joint>
+  <link
+    name="CASTOR1">
+    <inertial>
+      <origin
+        xyz="-2.77555756156289E-17 -0.0184805994312317 8.32667268468867E-17"
+        rpy="0 0 0" />
+      <mass
+        value="0.00562474956884102" />
+      <inertia
+        ixx="8.10640465030264E-07"
+        ixy="5.04431057290875E-22"
+        ixz="1.96293836767954E-22"
+        iyy="6.17911693154733E-07"
+        iyz="3.87650632277654E-21"
+        izz="5.97890190142364E-07" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://nova_nav/meshes/CASTOR1.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.898039215686275 0.898039215686275 0.898039215686275 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://nova_nav/meshes/CASTOR1.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="CASTOR1"
+    type="continuous">
+    <origin
+      xyz="0.230171212422855 -0.15852 -0.198349474349821"
+      rpy="0 0 0" />
+    <parent
+      link="base_link" />
+    <child
+      link="CASTOR1" />
+    <axis
+      xyz="0 1 0" />
+  </joint>
+  <link
+    name="CASTOR_RODA1">
+    <inertial>
+      <origin
+        xyz="0 -0.034 -5.55111512312578E-17"
+        rpy="0 0 0" />
+      <mass
+        value="0.0202974816716819" />
+      <inertia
+        ixx="2.57422305520007E-06"
+        ixy="1.60451659232216E-22"
+        ixz="8.8304053083525E-24"
+        iyy="2.57422305520007E-06"
+        iyz="-8.24328739106182E-24"
+        izz="3.96551871701517E-06" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://nova_nav/meshes/CASTOR_RODA1.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.796078431372549 0.823529411764706 0.937254901960784 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://nova_nav/meshes/CASTOR_RODA1.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="CASTOR_RODA1"
+    type="continuous">
+    <origin
+      xyz="0 0 0"
+      rpy="0 0 0" />
+    <parent
+      link="CASTOR1" />
+    <child
+      link="CASTOR_RODA1" />
+    <axis
+      xyz="0 0 1" />
+    <limit
+      effort="50"
+      velocity="50" />
+    <dynamics
+      damping="0.5"
+      friction="0.5" />
+  </joint>
+  <link
+    name="CASTOR2">
+    <inertial>
+      <origin
+        xyz="0 -0.0184805994312317 5.55111512312578E-17"
+        rpy="0 0 0" />
+      <mass
+        value="0.00562474956884102" />
+      <inertia
+        ixx="8.10640465030263E-07"
+        ixy="5.02421503800225E-22"
+        ixz="1.95284094809271E-22"
+        iyy="6.17911693154733E-07"
+        iyz="3.87279848802643E-21"
+        izz="5.97890190142363E-07" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://nova_nav/meshes/CASTOR2.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.898039215686275 0.898039215686275 0.898039215686275 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://nova_nav/meshes/CASTOR2.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="CASTOR2"
+    type="continuous">
+    <origin
+      xyz="0.230171212422855 -0.15852 0.1975"
+      rpy="0 0 0" />
+    <parent
+      link="base_link" />
+    <child
+      link="CASTOR2" />
+    <axis
+      xyz="0 1 0" />
+  </joint>
+  <link
+    name="CASTORRODA2">
+    <inertial>
+      <origin
+        xyz="0.46 -0.034 -1.94289029309402E-16"
+        rpy="0 0 0" />
+      <mass
+        value="0.0202974816716819" />
+      <inertia
+        ixx="2.57422305520008E-06"
+        ixy="1.60451659232216E-22"
+        ixz="8.8304053083525E-24"
+        iyy="2.57422305520007E-06"
+        iyz="-8.24328739106182E-24"
+        izz="3.96551871701517E-06" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://nova_nav/meshes/CASTORRODA2.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.796078431372549 0.823529411764706 0.937254901960784 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://nova_nav/meshes/CASTORRODA2.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="CASTORRODA2"
+    type="continuous">
+    <origin
+      xyz="-0.46 0 0"
+      rpy="0 0 0" />
+    <parent
+      link="CASTOR2" />
+    <child
+      link="CASTORRODA2" />
+    <axis
+      xyz="0 0 1" />
+    <limit
+      effort="50"
+      velocity="50" />
+    <dynamics
+      damping="0.5"
+      friction="0.5" />
+  </joint>
+  <link
+    name="CASTOR_3">
+    <inertial>
+      <origin
+        xyz="0 -0.0184805994312317 -5.55111512312578E-17"
+        rpy="0 0 0" />
+      <mass
+        value="0.00562474956884103" />
+      <inertia
+        ixx="8.10640465030263E-07"
+        ixy="-5.10099766489181E-22"
+        ixz="1.42676538761894E-22"
+        iyy="6.17911693154733E-07"
+        iyz="-3.58994095472061E-21"
+        izz="5.97890190142363E-07" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://nova_nav/meshes/CASTOR3.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.898039215686275 0.898039215686275 0.898039215686275 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://nova_nav/meshes/CASTOR3.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="CASTOR_3"
+    type="continuous">
+    <origin
+      xyz="-0.229828787577145 -0.15852 -0.19834947434982"
+      rpy="0 0 0" />
+    <parent
+      link="base_link" />
+    <child
+      link="CASTOR_3" />
+    <axis
+      xyz="0 1 0" />
+  </joint>
+  <link
+    name="CASTORRODA3">
+    <inertial>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <mass
+        value="0.0202974816716819" />
+      <inertia
+        ixx="2.57422305520007E-06"
+        ixy="-1.63980963179109E-22"
+        ixz="6.84517183822523E-24"
+        iyy="2.57422305520007E-06"
+        iyz="1.00079393645083E-23"
+        izz="3.96551871701517E-06" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://nova_nav/meshes/CASTORRODA3.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.796078431372549 0.823529411764706 0.937254901960784 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://nova_nav/meshes/CASTORRODA3.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="CASTORRODA3"
+    type="continuous">
+    <origin
+      xyz="0 -0.034 0"
+      rpy="0 0 0" />
+    <parent
+      link="CASTOR_3" />
+    <child
+      link="CASTORRODA3" />
+    <axis
+      xyz="0 0 -1" />
+    <limit
+      effort="50"
+      velocity="50" />
+    <dynamics
+      damping="0.5"
+      friction="0.5" />
+  </joint>
+  <link
+    name="CASTOR_4">
+    <inertial>
+      <origin
+        xyz="-5.55111512312578E-17 0.0155194005687683 -5.55111512312578E-17"
+        rpy="0 0 0" />
+      <mass
+        value="0.00562474956884103" />
+      <inertia
+        ixx="8.10640465030263E-07"
+        ixy="-5.06966966936254E-22"
+        ixz="1.42171667782553E-22"
+        iyy="6.17911693154733E-07"
+        iyz="-3.52866204226364E-21"
+        izz="5.97890190142364E-07" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://nova_nav/meshes/CASTOR4.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.898039215686275 0.898039215686275 0.898039215686275 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://nova_nav/meshes/CASTOR4.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="CASTOR_4"
+    type="continuous">
+    <origin
+      xyz="-0.229828787577145 -0.19252 0.1975"
+      rpy="0 0 0" />
+    <parent
+      link="base_link" />
+    <child
+      link="CASTOR_4" />
+    <axis
+      xyz="0 1 0" />
+  </joint>
+  <link
+    name="CASTORRODA4">
+    <inertial>
+      <origin
+        xyz="-0.46 0 2.4980018054066E-16"
+        rpy="0 0 0" />
+      <mass
+        value="0.0202974816716819" />
+      <inertia
+        ixx="2.57422305520008E-06"
+        ixy="-1.63980963179109E-22"
+        ixz="6.84517183822523E-24"
+        iyy="2.57422305520007E-06"
+        iyz="1.00079393645083E-23"
+        izz="3.96551871701517E-06" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://nova_nav/meshes/CASTORRODA4.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.796078431372549 0.823529411764706 0.937254901960784 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://nova_nav/meshes/CASTORRODA4.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="CASTORRODA4"
+    type="continuous">
+    <origin
+      xyz="0.46 0 0"
+      rpy="0 0 0" />
+    <parent
+      link="CASTOR_4" />
+    <child
+      link="CASTORRODA4" />
+    <axis
+      xyz="0 0 -1" />
+    <limit
+      effort="50"
+      velocity="50" />
+    <dynamics
+      damping="0.5"
+      friction="0.5" />
+  </joint>
+
+    <joint type="fixed" name="scan_joint">
+    <origin xyz="0.245 0.05 0" rpy="0 0 0"/>
+    <child link="scan_link"/>
+    <parent link="base_link"/>
+    <axis xyz="0 1 0" rpy="0 0 0"/>
+  </joint>
+
+  <link name='scan_link'>
+    <inertial>
+      <mass value="1e-5"/>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <inertia
+          ixx="1e-6" ixy="0" ixz="0"
+          iyy="1e-6" iyz="0"
+          izz="1e-6"
+      />
+    </inertial>
+    <collision name='collision'>
+      <origin xyz="0 0 0" rpy="0 0 0"/> 
+      <geometry>
+        <box size=".1 .1 .1"/>
+      </geometry>
+    </collision>
+
+    <visual name='scan_link_visual'>
+      <origin xyz="0 -0.05 0" rpy="-1.5708 0 0"/>
+      <geometry>
+        <mesh filename = "package://nova_nav/meshes/lidar.stl"/>
+      </geometry>
+    </visual>
+
+  </link>
+</robot>

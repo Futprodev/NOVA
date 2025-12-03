@@ -22,6 +22,7 @@ def generate_launch_description():
 
     params = {'robot_description': urdf_xml, 'use_sim_time': use_sim_time}
 
+    
     return LaunchDescription([
         DeclareLaunchArgument('use_sim_time', default_value='false'),
         Node(
@@ -35,13 +36,16 @@ def generate_launch_description():
             executable='ik_rviz_node',
             name='nova_arm_planar_ik_rviz',
             parameters=[{
-                'L1': 0.066,      # TODO: set your real shoulder->elbow distance
-                'L2': 0.200,
-                'L3': 0.17556,
+                'd1': 0.151,
+                'L1': 0.200,
+                'L2': 0.175,
+                'L3': 0.0,
+                'elbow_sign': -1,
                 'joint_names': ['joint_1','joint_2','joint_3','joint_4','joint_5'],
+                'zero_offsets': [0.0, 1.57079632679, 3.14159265359],  # 0, +90°, +180°
+                'signs':        [1.0, -1.0, 1.0],                    # yaw ok, J2/J3 flipped
             }],
-            output='screen'
-        ),
-        # Optional: start RViz with RobotModel + TF + JointState
-        # Node(package='rviz2', executable='rviz2', arguments=['-d', os.path.join(pkg_path,'config','rviz_nova_arm.rviz')])
+            output='screen'),
+
+        Node(package='rviz2', executable='rviz2', arguments=['-d', os.path.join(pkg_path,'rviz','rviz_nova_arm.rviz')])
     ])

@@ -25,7 +25,7 @@
         xyz="0 0 0"
         rpy="0 0 0" />
       <geometry>
-        <mesh filename="file:///home/maul/ws_nova/src/nova_arm/meshes/base_link.STL"/>
+        <mesh filename="package://nova_arm/meshes/base_link.STL"/>
 
       </geometry>
       <material
@@ -39,7 +39,7 @@
         xyz="0 0 0"
         rpy="0 0 0" />
       <geometry>
-        <mesh filename="file:///home/maul/ws_nova/src/nova_arm/meshes/base_link.STL"/>
+        <mesh filename="package://nova_arm/meshes/base_link.STL"/>
       </geometry>
     </collision>
   </link>
@@ -61,13 +61,13 @@
     </inertial>
     <visual>
       <origin xyz="0 0 0" rpy="1.5708 0 1.5708"/>
-      <geometry><mesh filename="file:///home/maul/ws_nova/src/nova_arm/meshes/Link_1.STL"/></geometry>
+      <geometry><mesh filename="package://nova_arm/meshes/Link_1.STL"/></geometry>
       <material name=""><color rgba="0.79216 0.81961 0.93333 1"/></material>
     </visual>
 
     <collision>
       <origin xyz="0 0 0" rpy="1.5708 0 1.5708"/>
-      <geometry><mesh filename="file:///home/maul/ws_nova/src/nova_arm/meshes/Link_1.STL"/></geometry>
+      <geometry><mesh filename="package://nova_arm/meshes/Link_1.STL"/></geometry>
     </collision>
   </link>
   <joint
@@ -106,13 +106,13 @@
     </inertial>
     <visual>
       <origin xyz="0 0 0" rpy="1.5708 0 -1.5708"/>
-      <geometry><mesh filename="file:///home/maul/ws_nova/src/nova_arm/meshes/Link_2.STL"/></geometry>
+      <geometry><mesh filename="package://nova_arm/meshes/Link_2.STL"/></geometry>
       <material name=""><color rgba="0.79216 0.81961 0.93333 1"/></material>
     </visual>
 
     <collision>
       <origin xyz="0 0 0" rpy="1.5708 0 -1.5708"/>
-      <geometry><mesh filename="file:///home/maul/ws_nova/src/nova_arm/meshes/Link_2.STL"/></geometry>
+      <geometry><mesh filename="package://nova_arm/meshes/Link_2.STL"/></geometry>
     </collision>
   </link>
   <joint
@@ -128,8 +128,8 @@
     <axis
       xyz="0 0 1" />
     <limit
-      lower="-1.5708"
-      upper="1.5708"
+      lower="-1.919"
+      upper="1.919"
       effort="12"
       velocity="1" />
   </joint>
@@ -151,13 +151,13 @@
     </inertial>
     <visual>
       <origin xyz="0 0 0" rpy="1.5708  0 0"/>
-      <geometry><mesh filename="file:///home/maul/ws_nova/src/nova_arm/meshes/Link_3.STL"/></geometry>
+      <geometry><mesh filename="package://nova_arm/meshes/Link_3.STL"/></geometry>
       <material name=""><color rgba="0.79216 0.81961 0.93333 1"/></material>
     </visual>
 
     <collision>
       <origin xyz="0 0 0" rpy="1.5708  0 0"/>
-      <geometry><mesh filename="file:///home/maul/ws_nova/src/nova_arm/meshes/Link_3.STL"/></geometry>
+      <geometry><mesh filename="package://nova_arm/meshes/Link_3.STL"/></geometry>
     </collision>
   </link>
   <joint
@@ -200,7 +200,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="file:///home/maul/ws_nova/src/nova_arm/meshes/Link_4.STL" />
+          filename="package://nova_arm/meshes/Link_4.STL" />
       </geometry>
       <material
         name="">
@@ -214,7 +214,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="file:///home/maul/ws_nova/src/nova_arm/meshes/Link_4.STL" />
+          filename="package://nova_arm/meshes/Link_4.STL" />
       </geometry>
     </collision>
   </link>
@@ -258,7 +258,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="file:///home/maul/ws_nova/src/nova_arm/meshes/Link_5.STL" />
+          filename="package://nova_arm/meshes/Link_5.STL" />
       </geometry>
       <material
         name="">
@@ -272,7 +272,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="file:///home/maul/ws_nova/src/nova_arm/meshes/Link_5.STL" />
+          filename="package://nova_arm/meshes/Link_5.STL" />
       </geometry>
     </collision>
   </link>
@@ -297,15 +297,7 @@
 
     <ros2_control name="nova_arm_system" type="system">
     <hardware>
-      <!-- Choose ONE of these depending on how you run: -->
-
-      <!-- SIM WITH GZ (Gazebo Harmonic/Garden): use gz_ros2_control -->
-      <!-- This hardware is provided by the simulator through the gz plugin. -->
       <plugin>gz_ros2_control/GazeboSystem</plugin>
-
-      <!-- OR: TEMP FAKE HARDWARE for RViz-only testing (if you don't use GZ yet)
-      <plugin>mock_components/GenericSystem</plugin>
-      -->
     </hardware>
 
     <joint name="joint_1">

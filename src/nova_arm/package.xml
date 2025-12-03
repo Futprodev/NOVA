@@ -3,11 +3,14 @@
 <package format="3">
   <name>nova_arm</name>
   <version>0.0.0</version>
-  <description>TODO: Package description</description>
-  <maintainer email="maulanaammar101@gmail.com">maul</maintainer>
+  <description>Nova Arm</description>
+  <maintainer email="maulanaammar101@gmail.com">Maulana Muammar</maintainer>
   <license>Apache-2.0</license>
 
-  <depend>[deps]</depend>
+  <exec_depend>robot_state_publisher</exec_depend>
+  <exec_depend>joint_state_publisher</exec_depend>
+  <exec_depend>joint_state_publisher_gui</exec_depend>
+  <exec_depend>xacro</exec_depend>
 
   <test_depend>ament_copyright</test_depend>
   <test_depend>ament_flake8</test_depend>
