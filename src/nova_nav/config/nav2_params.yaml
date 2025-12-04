@@ -53,10 +53,10 @@ bt_navigator:
     global_frame: map
     robot_base_frame: base_link
     odom_topic: /odom
-    default_bt_xml_filename: "navigate_w_replanning_and_recovery.xml"
+    #default_bt_xml_filename: "navigate_w_replanning_and_recovery.xml"
 
     # Let Nav2 use built-in plugins
-    plugin_lib_names: []
+    #plugin_lib_names: []
 
 
 bt_navigator_rclcpp_node:
