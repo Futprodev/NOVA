@@ -37,7 +37,7 @@ def generate_launch_description():
         ),
         DeclareLaunchArgument(
             'port',
-            default_value='/dev/ttyUSB0',
+            default_value='/dev/ttyUSB1',
             description='Serial port for the Mega'
         ),
         DeclareLaunchArgument(
@@ -47,7 +47,7 @@ def generate_launch_description():
         ),
         DeclareLaunchArgument(
             'lidar_port',
-            default_value='/dev/ttyUSB1',
+            default_value='/dev/ttyUSB0',
             description='Serial port for RPLIDAR'
         ),
         DeclareLaunchArgument(
