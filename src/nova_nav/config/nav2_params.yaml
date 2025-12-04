@@ -290,5 +290,26 @@ robot_state_publisher:
 
 collision_monitor:
   ros__parameters:
-    use_sim_time: False
-    enabled: False
+    use_sim_time: false
+    base_frame_id: base_link
+    odom_frame_id: odom
+    footprint_topic: /local_costmap/footprint
+    transform_tolerance: 0.2
+
+    command_topic: /cmd_vel     
+    stop_pub_topic: /cmd_vel
+    state_topic: collision_monitor_state
+    emergency_state_topic: collision_monitor_emergency
+
+    source_timeout: 2.0
+
+    observation_sources: scan
+
+    scan:
+      type: scan
+      topic: /scan
+      enabled: true
+      min_obstacle_height: 0.0
+      max_obstacle_height: 2.0
+      obstacle_max_distance: 2.5
+      raytrace_max_distance: 3.0
