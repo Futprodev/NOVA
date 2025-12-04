@@ -58,7 +58,6 @@ bt_navigator:
     # Let Nav2 use built-in plugins
     #plugin_lib_names: []
 
-
 bt_navigator_rclcpp_node:
   ros__parameters:
     use_sim_time: True

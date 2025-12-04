@@ -93,6 +93,20 @@ def generate_launch_description():
         launch_arguments={
             'use_sim_time': use_sim_time,
             'params_file': navigation_params_path,
+            'autostart': 'True',
+
+            # IMPORTANT: explicitly list lifecycle nodes we want
+            'lifecycle_nodes': (
+                'controller_server,'
+                'smoother_server,'
+                'planner_server,'
+                'route_server,'
+                'behavior_server,'
+                'bt_navigator,'
+                'waypoint_follower,'
+                'velocity_smoother,'
+                'collision_monitor'
+            ),
         }.items()
     )
 
