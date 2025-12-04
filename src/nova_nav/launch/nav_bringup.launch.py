@@ -18,6 +18,9 @@ def generate_launch_description():
     pkg_path = get_package_share_directory('nova_nav')
     urdf_path = os.path.join(pkg_path, 'urdf', 'nova_agv.urdf')
 
+    lidar_port = LaunchConfiguration('lidar_port') 
+    lidar_frame = LaunchConfiguration('lidar_frame')
+
     # Load URDF as string
     with open(urdf_path, 'r') as f:
         urdf_xml = f.read()
