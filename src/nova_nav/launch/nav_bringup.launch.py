@@ -24,7 +24,7 @@ def generate_launch_description():
 
     robot_description = {'robot_description': urdf_xml}
 
-    rviz_config = os.path.join(pkg_path, 'rviz', 'nova_nav.rviz')  # change name if needed
+    rviz_config = os.path.join(pkg_path, 'rviz', 'rviz_nova_agv.rviz')
 
     return LaunchDescription([
         # --- Launch arguments ---
@@ -34,7 +34,7 @@ def generate_launch_description():
         ),
         DeclareLaunchArgument(
             'port',
-            default_value='/dev/ttyACM0',
+            default_value='/dev/ttyUSB0',
             description='Serial port for the Mega'
         ),
         DeclareLaunchArgument(
@@ -45,16 +45,18 @@ def generate_launch_description():
 
         # --- URDF / TF publisher ---
         Node(
-            package='robot_state_publisher',
-            executable='robot_state_publisher',
-            name='robot_state_publisher',
-            output='screen',
-            parameters=[
-                robot_description,
-                {'use_sim_time': use_sim_time}
-            ],
+            package='joint_state_publisher',
+            executable='joint_state_publisher',
+            parameters=[robot_description],
         ),
 
+        Node(
+            package='robot_state_publisher',
+            executable='robot_state_publisher',
+            output='screen',
+            parameters=[robot_description, {'use_sim_time': use_sim_time}],
+        ),
+        
         # --- AGV bridge: /cmd_vel <-> serial, /odom + TF ---
         Node(
             package='nova_nav',
