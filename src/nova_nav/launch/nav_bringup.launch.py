@@ -42,6 +42,11 @@ def generate_launch_description():
             default_value='115200',
             description='Baudrate for the Mega'
         ),
+        DeclareLaunchArgument(
+            'lidar_frame',
+            default_value='laser_frame',          
+            description='TF frame for the LiDAR'
+        ),
 
         # --- URDF / TF publisher ---
         Node(
@@ -67,8 +72,24 @@ def generate_launch_description():
                 'port': port,
                 'baudrate': baudrate,
                 'odom_frame': 'odom',
-                'base_frame': 'base_link',
+                'base_frame': 'base_footprint',
                 'publish_tf': True,
+            }],
+        ),
+        
+        # --- RPLIDAR driver ---
+        Node(
+            package='rplidar_ros',
+            executable='rplidar_composition',
+            name='rplidar_composition',
+            output='screen',
+            parameters=[{
+                'serial_port': lidar_port,
+                'serial_baudrate': 115200,
+                'frame_id': lidar_frame,
+                'inverted': False,
+                'angle_compensate': True,
+                'scan_mode': 'Standard',
             }],
         ),
 

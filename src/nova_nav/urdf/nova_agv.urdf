@@ -91,7 +91,7 @@
     </collision>
   </link>
   <joint
-    name="KITI UTAMA"
+    name="KIRI_UTAMA"
     type="continuous">
     <origin
       xyz="-0.0015818 -0.1135 -0.19675"
@@ -617,14 +617,14 @@
       friction="0.5" />
   </joint>
 
-    <joint type="fixed" name="scan_joint">
+    <joint type="fixed" name="laser_joint">
     <origin xyz="0.245 0.05 0" rpy="0 0 0"/>
-    <child link="scan_link"/>
+    <child link="laser_frame"/>
     <parent link="base_link"/>
     <axis xyz="0 1 0" rpy="0 0 0"/>
   </joint>
 
-  <link name='scan_link'>
+  <link name='laser_frame'>
     <inertial>
       <mass value="1e-5"/>
       <origin xyz="0 0 0" rpy="0 0 0"/>
@@ -641,7 +641,7 @@
       </geometry>
     </collision>
 
-    <visual name='scan_link_visual'>
+    <visual name='laser_frame_visual'>
       <origin xyz="0 -0.05 0" rpy="-1.5708 0 0"/>
       <geometry>
         <mesh filename = "package://nova_nav/meshes/lidar.stl"/>
