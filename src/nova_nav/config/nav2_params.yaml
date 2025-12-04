@@ -287,3 +287,8 @@ recoveries_server:
 robot_state_publisher:
   ros__parameters:
     use_sim_time: True
+
+collision_monitor:
+  ros__parameters:
+    use_sim_time: False
+    enabled: False
