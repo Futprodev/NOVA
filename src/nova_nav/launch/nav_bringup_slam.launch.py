@@ -56,11 +56,6 @@ def generate_launch_description():
         'mapper_params_online_async.yaml'
     )
 
-    # RViz config for nav2 (can reuse your existing or create a new one)
-    rviz_config_path = PathJoinSubstitution(
-        [pkg_nova_nav, 'rviz', rviz_config]
-    )
-
     # ---------- Declare arguments ----------
     declare_use_sim_time = DeclareLaunchArgument(
         'use_sim_time',
@@ -68,24 +63,11 @@ def generate_launch_description():
         description='Use simulation (Gazebo) clock if true'
     )
 
-    declare_rviz = DeclareLaunchArgument(
-        'rviz',
-        default_value='true',
-        description='Launch RViz2'
-    )
-
-    declare_rviz_config = DeclareLaunchArgument(
-        'rviz_config',
-        default_value='navigation.rviz',
-        description='RViz config file name (in nova_nav/rviz)'
-    )
-
     # ---------- Include AGV hardware bringup ----------
     # This should start:
     #   - robot_state_publisher (URDF + TF)
     #   - agv_bridge_node (cmd_vel <-> serial, odom + TF)
     #   - rplidar_ros
-    #   - optionally RViz
     hw_bringup = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(hw_launch_path),
         launch_arguments={
@@ -114,22 +96,8 @@ def generate_launch_description():
         }.items()
     )
 
-    # ---------- RViz (Nav2 view) ----------
-    # Optional: a dedicated Nav2 RViz config
-    rviz_node = Node(
-        package='rviz2',
-        executable='rviz2',
-        name='rviz_nav2',
-        arguments=['-d', rviz_config_path],
-        condition=IfCondition(rviz),
-        parameters=[{'use_sim_time': use_sim_time}],
-        output='screen',
-    )
-
     ld = LaunchDescription()
     ld.add_action(declare_use_sim_time)
-    ld.add_action(declare_rviz)
-    ld.add_action(declare_rviz_config)
 
     # Start hardware + LiDAR
     ld.add_action(hw_bringup)
@@ -139,8 +107,5 @@ def generate_launch_description():
 
     # Start Nav2 (planners, controllers, BT navigator)
     ld.add_action(navigation_launch)
-
-    # Optional RViz for Nav2
-    ld.add_action(rviz_node)
 
     return ld
