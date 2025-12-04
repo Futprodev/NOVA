@@ -43,6 +43,11 @@ def generate_launch_description():
             description='Baudrate for the Mega'
         ),
         DeclareLaunchArgument(
+            'lidar_port',
+            default_value='/dev/ttyUSB1',
+            description='Serial port for RPLIDAR'
+        ),
+        DeclareLaunchArgument(
             'lidar_frame',
             default_value='laser_frame',          
             description='TF frame for the LiDAR'
@@ -76,7 +81,7 @@ def generate_launch_description():
                 'publish_tf': True,
             }],
         ),
-        
+
         # --- RPLIDAR driver ---
         Node(
             package='rplidar_ros',
