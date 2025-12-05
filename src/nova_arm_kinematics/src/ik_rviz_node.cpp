@@ -16,9 +16,9 @@ public:
   PlanarIKRvizNode(): Node("nova_arm_planar_ik_rviz")
   {
     zero_offs_ = declare_parameter<std::vector<double>>(
-      "zero_offsets", {0.0, M_PI/2, M_PI});      // [j1, j2, j3] offsets
+      "zero_offsets", {0.0, 0.0, 0.0});      // [j1, j2, j3] offsets
     signs_ = declare_parameter<std::vector<double>>(
-      "signs", {1.0, -1.0, -1.0});               // [j1, j2, j3] direction flips
+      "signs", {1.0, -1.0, 1.0});               // [j1, j2, j3] direction flips
     // ---- Parameters ----
     d1_ = declare_parameter("d1", 0.151);   // base -> shoulder height
     L1_ = declare_parameter("L1", 0.200);   // shoulder -> elbow
@@ -41,7 +41,7 @@ public:
     move_T_ = 0.5;
     move_start_ = now();
 
-    pub_js_ = create_publisher<sensor_msgs::msg::JointState>("joint_states", 50);
+    pub_js_ = create_publisher<sensor_msgs::msg::JointState>("arm_joint_states", 50);
     sub_goal_ = create_subscription<std_msgs::msg::Float64MultiArray>(
       "planar_goal", 10, std::bind(&PlanarIKRvizNode::onGoal, this, std::placeholders::_1));
     timer_ = create_wall_timer(std::chrono::milliseconds(10),
