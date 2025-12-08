@@ -23,7 +23,22 @@ ament_target_dependencies(
   "sensor_msgs"
 )
 
+add_executable(ik_hw_node src/ik_hw_node.cpp)
+target_include_directories(ik_hw_node PUBLIC
+  $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+  $<INSTALL_INTERFACE:include/${PROJECT_NAME}>)
+target_compile_features(ik_hw_node PUBLIC c_std_99 cxx_std_17)  # Require C99 and C++17
+ament_target_dependencies(
+  ik_hw_node
+  "rclcpp"
+  "std_msgs"
+  "sensor_msgs"
+)
+
 install(TARGETS ik_rviz_node
+  DESTINATION lib/${PROJECT_NAME})
+
+install(TARGETS ik_hw_node
   DESTINATION lib/${PROJECT_NAME})
 
 if(BUILD_TESTING)

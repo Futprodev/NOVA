@@ -6,7 +6,7 @@ package_name = 'nova_arm'
 setup(
     name=package_name,
     version='0.0.0',
-    packages=[],  # or ['nova_arm'] if you have Python modules
+    packages=['nova_arm'], 
     data_files=[
         ('share/ament_index/resource_index/packages', ['resource/' + package_name]),
         ('share/' + package_name, ['package.xml']),
@@ -21,4 +21,9 @@ setup(
     maintainer_email='maulana.muammar@binus.ac.id',
     description='Nova arm URDF + launch',
     license='MIT',
+    entry_points={
+        'console_scripts': [
+            'plant_movement = nova_arm.plant_movement:main'
+        ],
+    },
 )

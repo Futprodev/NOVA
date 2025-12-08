@@ -650,7 +650,7 @@
     </link>
 
     <joint name="arm_mount_joint" type="fixed">
-        <origin xyz="0.175 0.0 0.125" rpy="-1.5708 3.14 0"/>
+        <origin xyz="0.175 0.0 0.125" rpy="-1.5708 3.1416 0"/>
         <parent link="base_link"/>
         <child link="arm_base_link"/>
     </joint>
@@ -879,8 +879,8 @@
     name="joint_4"
     type="prismatic">
     <origin
-      xyz="0.17556 0.0027305 -0.012575"
-      rpy="1.5708 0 1.5708" />
+      xyz="0.17556 0.0023305 0.0"
+      rpy="0 1.5708 0" />
     <parent
       link="Link_3" />
     <child
@@ -939,8 +939,8 @@
     name="joint_5"
     type="prismatic">
     <origin
-      xyz="0.17556 0.0018695 0.012575"
-      rpy="-1.5708 0 -1.5708" />
+      xyz="0.17556 0.0022695 0.006"
+      rpy="3.1416 -1.5708 0" />
     <parent
       link="Link_3" />
     <child
