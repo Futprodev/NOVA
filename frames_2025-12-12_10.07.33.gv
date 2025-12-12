@@ -1,0 +1,19 @@
+digraph G {
+"base_link" -> "CASTOR1"[label=" Broadcaster: default_authority\nAverage rate: 10.312\nBuffer length: 3.2\nMost recent transform: 1765508853.596908\nOldest transform: 1765508850.396836\n"];
+"base_footprint" -> "base_link"[label=" Broadcaster: default_authority\nAverage rate: 10000.0\nBuffer length: 0.0\nMost recent transform: 0.0\nOldest transform: 0.0\n"];
+"base_link" -> "CASTOR2"[label=" Broadcaster: default_authority\nAverage rate: 10.312\nBuffer length: 3.2\nMost recent transform: 1765508853.596908\nOldest transform: 1765508850.396836\n"];
+"CASTOR2" -> "CASTORRODA2"[label=" Broadcaster: default_authority\nAverage rate: 10.312\nBuffer length: 3.2\nMost recent transform: 1765508853.596908\nOldest transform: 1765508850.396836\n"];
+"CASTOR_3" -> "CASTORRODA3"[label=" Broadcaster: default_authority\nAverage rate: 10.312\nBuffer length: 3.2\nMost recent transform: 1765508853.596908\nOldest transform: 1765508850.396836\n"];
+"base_link" -> "CASTOR_3"[label=" Broadcaster: default_authority\nAverage rate: 10.312\nBuffer length: 3.2\nMost recent transform: 1765508853.596908\nOldest transform: 1765508850.396836\n"];
+"CASTOR_4" -> "CASTORRODA4"[label=" Broadcaster: default_authority\nAverage rate: 10.312\nBuffer length: 3.2\nMost recent transform: 1765508853.596908\nOldest transform: 1765508850.396836\n"];
+"base_link" -> "CASTOR_4"[label=" Broadcaster: default_authority\nAverage rate: 10.312\nBuffer length: 3.2\nMost recent transform: 1765508853.596908\nOldest transform: 1765508850.396836\n"];
+"CASTOR1" -> "CASTOR_RODA1"[label=" Broadcaster: default_authority\nAverage rate: 10.312\nBuffer length: 3.2\nMost recent transform: 1765508853.596908\nOldest transform: 1765508850.396836\n"];
+"base_link" -> "KANAN_UTAMA"[label=" Broadcaster: default_authority\nAverage rate: 10.312\nBuffer length: 3.2\nMost recent transform: 1765508853.596908\nOldest transform: 1765508850.396836\n"];
+"base_link" -> "KIRI_UTAMA"[label=" Broadcaster: default_authority\nAverage rate: 10.312\nBuffer length: 3.2\nMost recent transform: 1765508853.596908\nOldest transform: 1765508850.396836\n"];
+"odom" -> "base_footprint"[label=" Broadcaster: default_authority\nAverage rate: 20.316\nBuffer length: 3.249\nMost recent transform: 1765508853.65732\nOldest transform: 1765508850.408636\n"];
+"base_link" -> "laser_frame"[label=" Broadcaster: default_authority\nAverage rate: 10000.0\nBuffer length: 0.0\nMost recent transform: 0.0\nOldest transform: 0.0\n"];
+edge [style=invis];
+ subgraph cluster_legend { style=bold; color=black; label ="view_frames Result";
+"Recorded at time: 1765508853.7235417"[ shape=plaintext ] ;
+}->"odom";
+}
