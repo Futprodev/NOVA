@@ -31,21 +31,33 @@ def generate_launch_description():
             output='screen',
             parameters=[params],
         ),
+
+        # test with esp uses "joint_states" topic, so remap to avoid conflict
         Node(
-            package='nova_arm_kinematics',
-            executable='ik_rviz_node',
-            name='nova_arm_planar_ik_rviz',
-            parameters=[{
-                'd1': 0.151,
-                'L1': 0.200,
-                'L2': 0.175,
-                'L3': 0.0,
-                'elbow_sign': -1,
-                'joint_names': ['joint_1','joint_2','joint_3','joint_4','joint_5'],
-                'zero_offsets': [0.0, 1.57079632679, 3.14159265359],  # 0, +90°, +180°
-                'signs':        [1.0, -1.0, 1.0],                    # yaw ok, J2/J3 flipped
-            }],
-            output='screen'),
+        package='joint_state_publisher',
+        executable='joint_state_publisher',
+        name='joint_state_publisher',
+        parameters=[{
+            'source_list': ['/arm_joint_states'],  # uses IK output
+            'delta': 0.0,
+        }]
+        ),
+
+        # Node(
+        #     package='nova_arm_kinematics',
+        #     executable='ik_rviz_node',
+        #     name='nova_arm_planar_ik_rviz',
+        #     parameters=[{
+        #         'd1': 0.151,
+        #         'L1': 0.200,
+        #         'L2': 0.175,
+        #         'L3': 0.0,
+        #         'elbow_sign': -1,
+        #         'joint_names': ['joint_1','joint_2','joint_3','joint_4','joint_5'],
+        #         'zero_offsets': [0.0, 1.57079632679, 3.14159265359],  # 0, +90°, +180°
+        #         'signs':        [1.0, -1.0, 1.0],                    # yaw ok, J2/J3 flipped
+        #     }],
+        #     output='screen'),
 
         Node(package='rviz2', executable='rviz2', arguments=['-d', os.path.join(pkg_path,'rviz','rviz_nova_arm.rviz')])
     ])

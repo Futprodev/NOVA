@@ -15,22 +15,22 @@ public:
   PlanarIKHWNode() : Node("nova_arm_planar_ik_hw")
   {
     // link params (match MATLAB / URDF)
-    d1_ = declare_parameter("d1", 0.151);
+    d1_ = declare_parameter("d1", 0.145);
     L1_ = declare_parameter("L1", 0.200);
-    L2_ = declare_parameter("L2", 0.175);
+    L2_ = declare_parameter("L2", 0.255);
     L3_ = declare_parameter("L3", 0.0);
 
     // sign + offsets: math → hardware deg
     zero_offs_ = declare_parameter<std::vector<double>>(
         "zero_offsets", {0.0, 90.0, 0.0});      // degrees
     signs_ = declare_parameter<std::vector<double>>(
-        "signs", {1.0, -1.0, -1.0});            // +1 / -1
+        "signs", {1.0, -1.0, 1.0});            // +1 / -1
 
-    elbow_sign_pref_ = declare_parameter("elbow_sign", 1); // +1 or -1
+    elbow_sign_pref_ = declare_parameter("elbow_sign", -1); // +1 or -1
 
-    // hard limits in hardware deg
-    lim_lower_deg_ = {-180.0, -110.0, -135.0};
-    lim_upper_deg_ = { 180.0,  110.0,  135.0};
+    // hard limits in hardware deg (base, shoulder, elbow)
+    lim_lower_deg_ = {-150.0, -94.0, -143.0};
+    lim_upper_deg_ = {150.0, 104.0,  157.0};
 
     pub_cmd_ = create_publisher<std_msgs::msg::Float64MultiArray>(
         "nova_arm/command_deg", 10);
@@ -122,4 +122,4 @@ int main(int argc, char **argv)
   rclcpp::spin(std::make_shared<PlanarIKHWNode>());
   rclcpp::shutdown();
   return 0;
-}
+} 

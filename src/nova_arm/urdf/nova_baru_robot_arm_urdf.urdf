@@ -1,0 +1,337 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- This URDF was automatically created by SolidWorks to URDF Exporter! Originally created by Stephen Brawner (brawner@gmail.com) 
+     Commit Version: 1.6.0-4-g7f85cfe  Build Version: 1.6.7995.38578
+     For more information, please see http://wiki.ros.org/sw_urdf_exporter -->
+<robot
+  name="nova_baru_robot_arm_urdf">
+  <link
+    name="base_link">
+    <inertial>
+      <origin
+        xyz="0 0 0.0360118483822338"
+        rpy="0 0 0" />
+      <mass
+        value="0.808680752634456" />
+      <inertia
+        ixx="0.00120256197610273"
+        ixy="1.19173363326611E-35"
+        ixz="-1.08492896540863E-35"
+        iyy="0.00120256197610273"
+        iyz="-2.43749157114057E-20"
+        izz="0.0013348094230841" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://nova_baru_robot_arm_urdf/meshes/base_link.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.792156862745098 0.819607843137255 0.933333333333333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://nova_baru_robot_arm_urdf/meshes/base_link.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <link
+    name="link_1">
+    <inertial>
+      <origin
+        xyz="0.0005431984079338 0.00466035214121182 0.0450932430346528"
+        rpy="0 0 0" />
+      <mass
+        value="0.2631545299345" />
+      <inertia
+        ixx="0.000630079269539033"
+        ixy="-2.28025198579899E-05"
+        ixz="-1.51394688144321E-06"
+        iyy="0.000437103633035838"
+        iyz="-1.29888554302886E-05"
+        izz="0.000522653459728538" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://nova_baru_robot_arm_urdf/meshes/link_1.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.792156862745098 0.819607843137255 0.933333333333333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://nova_baru_robot_arm_urdf/meshes/link_1.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="joint_1"
+    type="revolute">
+    <origin
+      xyz="0 0 0.0867"
+      rpy="0 0 0" />
+    <parent
+      link="base_link" />
+    <child
+      link="link_1" />
+    <axis
+      xyz="0 0 -1" />
+    <limit
+      lower="0"
+      upper="0"
+      effort="0"
+      velocity="0" />
+  </joint>
+  <link
+    name="link_2">
+    <inertial>
+      <origin
+        xyz="-0.0047546365252807 0.0994696376073621 0.0409964724324508"
+        rpy="0 0 0" />
+      <mass
+        value="0.814876602360436" />
+      <inertia
+        ixx="0.00794403557592474"
+        ixy="-9.04971920091602E-07"
+        ixz="-1.02577859885628E-05"
+        iyy="0.000594811112086473"
+        iyz="4.2619355407952E-07"
+        izz="0.00803084145628519" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://nova_baru_robot_arm_urdf/meshes/link_2.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.792156862745098 0.819607843137255 0.933333333333333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://nova_baru_robot_arm_urdf/meshes/link_2.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="joint_2"
+    type="revolute">
+    <origin
+      xyz="0.0046309 0.039731 0.069"
+      rpy="1.5708 0 0" />
+    <parent
+      link="link_1" />
+    <child
+      link="link_2" />
+    <axis
+      xyz="0.11577 0 -0.99328" />
+    <limit
+      lower="0"
+      upper="0"
+      effort="0"
+      velocity="0" />
+  </joint>
+  <link
+    name="link_3">
+    <inertial>
+      <origin
+        xyz="0.11514570327813 0.00241947158128375 0.00175916482372064"
+        rpy="0 0 0" />
+      <mass
+        value="0.253028324841648" />
+      <inertia
+        ixx="0.000179018233339706"
+        ixy="-3.3598051058554E-05"
+        ixz="0.000100121439701681"
+        iyy="0.00108467030280098"
+        iyz="3.30524111588039E-06"
+        izz="0.00104814758019308" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://nova_baru_robot_arm_urdf/meshes/link_3.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.792156862745098 0.819607843137255 0.933333333333333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://nova_baru_robot_arm_urdf/meshes/link_3.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="joint_3"
+    type="revolute">
+    <origin
+      xyz="-0.0078842 0.2 0.067642"
+      rpy="0 0 0" />
+    <parent
+      link="link_2" />
+    <child
+      link="link_3" />
+    <axis
+      xyz="0.11577 0 -0.99328" />
+    <limit
+      lower="0"
+      upper="0"
+      effort="0"
+      velocity="0" />
+  </joint>
+  <link
+    name="link_4">
+    <inertial>
+      <origin
+        xyz="0.00550387973208875 -2.0087265184543E-12 0.01156693831197"
+        rpy="0 0 0" />
+      <mass
+        value="0.00766310733648052" />
+      <inertia
+        ixx="1.40172948402712E-06"
+        ixy="8.80921725462406E-17"
+        ixz="1.69446652802415E-07"
+        iyy="1.13666144881246E-06"
+        iyz="-3.34917104660554E-17"
+        izz="4.96049465111309E-07" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://nova_baru_robot_arm_urdf/meshes/link_4.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.250980392156863 0.250980392156863 0.250980392156863 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://nova_baru_robot_arm_urdf/meshes/link_4.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="joint_4"
+    type="prismatic">
+    <origin
+      xyz="0.21089 0.0025 0.0011228"
+      rpy="0 -1.4548 -3.1416" />
+    <parent
+      link="link_3" />
+    <child
+      link="link_4" />
+    <axis
+      xyz="1 0 0" />
+    <limit
+      lower="0"
+      upper="0"
+      effort="0"
+      velocity="0" />
+  </joint>
+  <link
+    name="link_5">
+    <inertial>
+      <origin
+        xyz="-0.00550387966770506 3.26028093411423E-12 0.0115669383230773"
+        rpy="0 0 0" />
+      <mass
+        value="0.00766310728416717" />
+      <inertia
+        ixx="1.40172949071525E-06"
+        ixy="1.10765357307095E-16"
+        ixz="-1.69446652530343E-07"
+        iyy="1.13666144599587E-06"
+        iyz="-1.88659770532688E-17"
+        izz="4.96049467823051E-07" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://nova_baru_robot_arm_urdf/meshes/link_5.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.250980392156863 0.250980392156863 0.250980392156863 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://nova_baru_robot_arm_urdf/meshes/link_5.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="joint_5"
+    type="prismatic">
+    <origin
+      xyz="0.21089 0.0025 0.0011228"
+      rpy="0 -1.4548 -3.1416" />
+    <parent
+      link="link_3" />
+    <child
+      link="link_5" />
+    <axis
+      xyz="1 0 0" />
+    <limit
+      lower="0"
+      upper="0"
+      effort="0"
+      velocity="0" />
+  </joint>
+</robot>

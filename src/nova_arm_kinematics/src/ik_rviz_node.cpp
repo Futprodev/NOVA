@@ -6,205 +6,223 @@
 #include <vector>
 #include <string>
 
-static inline double wrap_pi(double a){while(a>M_PI)a-=2*M_PI;while(a<=-M_PI)a+=2*M_PI;return a;}
-static inline double clamp(double v,double lo,double hi){return std::max(lo,std::min(v,hi));}
+static inline double wrap_pi(double a) {
+  while (a >  M_PI) a -= 2.0 * M_PI;
+  while (a <= -M_PI) a += 2.0 * M_PI;
+  return a;
+}
 
-struct FKOut{double x,y,z;};
+static inline double clamp(double v, double lo, double hi) {
+  return std::max(lo, std::min(v, hi));
+}
+
+static inline double rad2deg(double r){ return r * 180.0 / M_PI; }
+static inline double deg2rad(double d){ return d * M_PI / 180.0; }
+
+struct FKOut { double x, y, z; };
 
 class PlanarIKRvizNode : public rclcpp::Node {
 public:
-  PlanarIKRvizNode(): Node("nova_arm_planar_ik_rviz")
+  PlanarIKRvizNode() : Node("nova_arm_planar_ik_rviz")
   {
-    zero_offs_ = declare_parameter<std::vector<double>>(
-      "zero_offsets", {0.0, 0.0, 0.0});      // [j1, j2, j3] offsets
-    signs_ = declare_parameter<std::vector<double>>(
-      "signs", {1.0, -1.0, 1.0});               // [j1, j2, j3] direction flips
-    // ---- Parameters ----
-    d1_ = declare_parameter("d1", 0.151);   // base -> shoulder height
-    L1_ = declare_parameter("L1", 0.200);   // shoulder -> elbow
-    L2_ = declare_parameter("L2", 0.175);   // elbow -> wrist
-    L3_ = declare_parameter("L3", 0.0);     // wrist -> EE offset along last link
-    elbow_sign_pref_ = declare_parameter("elbow_sign", 1); // +1 or -1
+    // --- Parameters: match MATLAB kinematics ---
+    d1_ = declare_parameter("d1", 0.151);
+    L1_ = declare_parameter("L1", 0.200);
+    L2_ = declare_parameter("L2", 0.175);
+    L3_ = declare_parameter("L3", 0.0);
+
+    // Same as MATLAB: elbowSign = -1
+    elbow_sign_pref_ = declare_parameter("elbow_sign", -1);
+
+    // === IMPORTANT: These are MATLAB cmd_hw mapping parameters IN DEGREES ===
+    // cmd_hw_deg = signs_deg[i] * q_math_deg + zero_offs_deg[i]
+    // MATLAB mapping: BASE=q1, SH=-q2+90, EL=q3  --> signs=[1,-1,1], zero=[0,90,0]
+    zero_offs_deg_ = declare_parameter<std::vector<double>>(
+      "zero_offsets_deg", {0.0, 90.0, 0.0});
+    signs_deg_ = declare_parameter<std::vector<double>>(
+      "signs_deg", {1.0, -1.0, -1.0});
+
+    // MATLAB cmd_hw clamps (deg)
+    cmd_lower_deg_ = declare_parameter<std::vector<double>>(
+      "cmd_lower_deg", {-150.0, -94.0, -143.0});
+    cmd_upper_deg_ = declare_parameter<std::vector<double>>(
+      "cmd_upper_deg", { 150.0, 104.0,  157.0});
 
     joint_names_ = declare_parameter<std::vector<std::string>>(
-      "joint_names", {"joint_1","joint_2","joint_3","joint_4","joint_5"});
+      "joint_names", {"base_joint", "shoulder_joint", "elbow_joint"});
 
-    // Limits (from URDF)
-    lim_lower_ = { -M_PI,  -1.919, -2.356,  0.0,   -0.014 };
-    lim_upper_ = {  M_PI,   1.919,  2.356,  0.014,  0.0   };
+    // wide math limits (radians) - still fine
+    lim_lower_ = declare_parameter<std::vector<double>>(
+      "joint_lower", {-M_PI, -M_PI, -M_PI});
+    lim_upper_ = declare_parameter<std::vector<double>>(
+      "joint_upper", { M_PI,  M_PI,  M_PI});
 
-    vel_max_   = {1.0, 1.0, 1.5, 0.02, 0.02}; // rad/s or m/s
+    vel_max_ = declare_parameter<std::vector<double>>(
+      "joint_vel_max", {1.5, 1.5, 1.5});  // rad/s
 
-    current_q_ = std::vector<double>(5, 0.0);
+    current_q_ = std::vector<double>(3, 0.0);
     target_q_  = current_q_;
     start_q_   = current_q_;
-    move_T_ = 0.5;
+    move_T_    = 0.5;
     move_start_ = now();
 
     pub_js_ = create_publisher<sensor_msgs::msg::JointState>("arm_joint_states", 50);
+
     sub_goal_ = create_subscription<std_msgs::msg::Float64MultiArray>(
-      "planar_goal", 10, std::bind(&PlanarIKRvizNode::onGoal, this, std::placeholders::_1));
-    timer_ = create_wall_timer(std::chrono::milliseconds(10),
+      "planar_goal", 10,
+      std::bind(&PlanarIKRvizNode::onGoal, this, std::placeholders::_1));
+
+    timer_ = create_wall_timer(
+      std::chrono::milliseconds(10),
       std::bind(&PlanarIKRvizNode::onTimer, this));
 
     RCLCPP_INFO(get_logger(),
-      "IK node ready. d1=%.3f L1=%.3f L2=%.3f L3=%.3f (elbow_sign=%d)",
-      d1_, L1_, L2_, L3_, elbow_sign_pref_);
+      "RViz IK ready. d1=%.3f L1=%.3f L2=%.3f elbow_sign=%d (cmd mapping uses *_deg + clamps)",
+      d1_, L1_, L2_, elbow_sign_pref_);
   }
 
 private:
-  std::vector<double> zero_offs_;
-  std::vector<double> signs_;
-  
-  // Forward kinematics for the 3 revolute joints (EE at the tip of L2+L3)
-  FKOut fk(double q1,double q2,double q3,double L3_use=0.0) const {
-    const double xp = L1_*std::cos(q2) + L2_*std::cos(q2+q3) + L3_use*std::cos(q2+q3);
-    const double zp = d1_ + L1_*std::sin(q2) + L2_*std::sin(q2+q3) + L3_use*std::sin(q2+q3);
+  FKOut fk(double q1, double q2, double q3) const {
+    const double xp = L1_ * std::cos(q2) + L2_ * std::cos(q2 + q3);
+    const double zp = d1_ + L1_ * std::sin(q2) + L2_ * std::sin(q2 + q3);
     const double c1 = std::cos(q1), s1 = std::sin(q1);
-    return FKOut{ c1*xp, s1*xp, zp };
+    return FKOut{ c1 * xp, s1 * xp, zp };
+  }
+
+  // map math(rad) -> cmd_hw(deg) + clamp
+  std::array<double,3> mathToCmdClampedDeg(const std::array<double,3>& q_math_rad,
+                                           std::array<double,3>* out_raw_deg=nullptr) const
+  {
+    std::array<double,3> raw{}, cmd{};
+    for(int i=0;i<3;i++){
+      const double q_deg = rad2deg(q_math_rad[i]);
+      raw[i] = signs_deg_[i] * q_deg + zero_offs_deg_[i];
+      cmd[i] = clamp(raw[i], cmd_lower_deg_[i], cmd_upper_deg_[i]);
+    }
+    if(out_raw_deg) *out_raw_deg = raw;
+    return cmd;
+  }
+
+  // cmd_hw(deg) -> math(rad)  (inverse of the mapping)
+  std::array<double,3> cmdDegToMathRad(const std::array<double,3>& cmd_deg) const
+  {
+    std::array<double,3> q{};
+    for(int i=0;i<3;i++){
+      const double s = signs_deg_[i];
+      const double q_deg = (std::fabs(s) < 1e-9) ? 0.0 : (cmd_deg[i] - zero_offs_deg_[i]) / s;
+      q[i] = wrap_pi(deg2rad(q_deg));
+    }
+    return q;
   }
 
   void onGoal(const std_msgs::msg::Float64MultiArray::SharedPtr msg)
   {
-    const auto& d = msg->data;
+    const auto &d = msg->data;
     if (d.size() < 3) {
-      RCLCPP_WARN(get_logger(), "planar_goal expects [x,y,z,(optional φ),(optional g)]. Got %zu", d.size());
+      RCLCPP_WARN(get_logger(), "planar_goal expects [x,y,z]. Got %zu", d.size());
       return;
     }
 
-    // Inputs
     const double x = d[0], y = d[1], z = d[2];
-    bool use_phi = (d.size() >= 4);
-    double phi = use_phi ? d[3] : 0.0;
-    const double g = (d.size()==3 ? 0.0 :
-                     (d.size()==4 ? 0.0 : d[4]));
 
-    // Base yaw
     const double q1 = std::atan2(y, x);
-    const double r  = std::sqrt(x*x + y*y);
+    const double r_xy = std::hypot(x, y);
+    const double z_rel = z - d1_;
+    const double r = std::hypot(r_xy, z_rel);
 
-    RCLCPP_INFO(get_logger(),
-      "Goal: x=%.3f y=%.3f z=%.3f %s φ=%.3f g=%.3f | q1(yaw)=%.2f° r=%.3f",
-      x,y,z, use_phi?"with":"(no)", phi, g, (q1*180.0/M_PI), r);
+    const double sumL  = L1_ + L2_;
+    const double diffL = std::fabs(L1_ - L2_);
 
-    std::vector<std::vector<double>> cands;
-
-    if (!use_phi) {
-      // ---- Unconstrained IK (match MATLAB) ----
-      const double Xs = r;
-      const double Zs = z - d1_;
-      const double D2 = Xs*Xs + Zs*Zs;
-      const double D  = std::sqrt(D2);
-      const double sumL = L1_ + L2_, diffL = std::fabs(L1_ - L2_);
-      if (D > sumL + 1e-6 || D < diffL - 1e-6) {
-        RCLCPP_WARN(get_logger(),
-          "Target unreachable (unconstrained). D=%.3f, range=[%.3f, %.3f]", D, diffL, sumL);
-        return;
-      }
-      double c3 = (D2 - L1_*L1_ - L2_*L2_) / (2.0 * L1_ * L2_);
-      c3 = std::max(-1.0, std::min(1.0, c3));
-      const double s_sq = std::max(0.0, 1.0 - c3*c3);
-      for (int s_first : {elbow_sign_pref_, -elbow_sign_pref_}) {
-        const double s3 = (s_first>=0 ? +1.0 : -1.0) * std::sqrt(s_sq);
-        const double q3 = std::atan2(s3, c3);
-        const double k1 = L1_ + L2_*std::cos(q3);
-        const double k2 = L2_*std::sin(q3);
-        const double q2 = std::atan2(Zs, Xs) - std::atan2(k2, k1);
-        std::vector<double> q = {wrap_pi(q1), wrap_pi(q2), wrap_pi(q3)};
-        if (within_limits(q)) cands.push_back(q);
-        if (!cands.empty()) break; // prefer requested branch
-      }
-    } else {
-      // ---- Constrained IK (old behavior; honor φ) ----
-      const double rw = r - L3_*std::cos(phi);
-      const double zw = (z - d1_) - L3_*std::sin(phi);
-      const double D2 = rw*rw + zw*zw;
-      const double D  = std::sqrt(D2);
-      const double sumL = L1_ + L2_, diffL = std::fabs(L1_ - L2_);
-      RCLCPP_INFO(get_logger(), "Constrained: rw=%.3f zw=%.3f D=%.3f", rw, zw, D);
-      if (D > sumL + 1e-6 || D < diffL - 1e-6) {
-        RCLCPP_WARN(get_logger(),
-          "Target unreachable (constrained). D=%.3f, range=[%.3f, %.3f]", D, diffL, sumL);
-        return;
-      }
-      double c2 = (D2 - L1_*L1_ - L2_*L2_) / (2.0 * L1_ * L2_);
-      c2 = std::max(-1.0, std::min(1.0, c2));
-      const double s_sq = std::max(0.0, 1.0 - c2*c2);
-      for (int s_first : {elbow_sign_pref_, -elbow_sign_pref_}) {
-        const double s2 = (s_first>=0 ? +1.0 : -1.0) * std::sqrt(s_sq);
-        const double q3 = std::atan2(s2, c2);
-        const double k1 = L1_ + L2_*std::cos(q3);
-        const double k2 = L2_*std::sin(q3);
-        const double q2 = std::atan2(zw, rw) - std::atan2(k2, k1);
-        std::vector<double> q = {wrap_pi(q1), wrap_pi(q2), wrap_pi(q3)};
-        if (within_limits(q)) cands.push_back(q);
-        if (!cands.empty()) break;
-      }
-    }
-
-    if (cands.empty()) {
-      RCLCPP_WARN(get_logger(), "IK found no solution within joint limits.");
+    if (r > sumL + 1e-6 || r < diffL - 1e-6) {
+      RCLCPP_WARN(get_logger(), "Target unreachable. D=%.3f, range=[%.3f, %.3f]", r, diffL, sumL);
       return;
     }
 
-    // Choose candidate and set gripper
-    const auto q = cands.front();
-    const double q4 = clamp(+0.5*g, lim_lower_[3], lim_upper_[3]);
-    const double q5 = clamp(-0.5*g, lim_lower_[4], lim_upper_[4]);
-    target_q_ = {q[0], q[1], q[2], q4, q5};
+    double cos_q3 = (r*r - L1_*L1_ - L2_*L2_) / (2.0 * L1_ * L2_);
+    cos_q3 = clamp(cos_q3, -1.0, 1.0);
 
-    // Debug: print angles and verify with FK
-    const FKOut ee = fk(q[0], q[1], q[2], L3_);
-    RCLCPP_INFO(get_logger(),
-      "Math q=[%.2f, %.2f, %.2f] deg  FK=(%.3f, %.3f, %.3f)",
-      q[0]*180/M_PI, q[1]*180/M_PI, q[2]*180/M_PI, ee.x, ee.y, ee.z);
+    double q3 = elbow_sign_pref_ * std::acos(cos_q3);
 
-    // What RViz will actually receive:
-    const double q1_cmd = signs_[0]*q[0] + zero_offs_[0];
-    const double q2_cmd = signs_[1]*q[1] + zero_offs_[1];
-    const double q3_cmd = signs_[2]*q[2] + zero_offs_[2];
-    RCLCPP_INFO(get_logger(),
-      "Cmd q (to RViz)=[%.2f, %.2f, %.2f] deg",
-      q1_cmd*180/M_PI, q2_cmd*180/M_PI, q3_cmd*180/M_PI);
+    const double beta  = std::atan2(z_rel, r_xy);
+    const double gamma = std::atan2(L2_ * std::sin(q3),
+                                    L1_ + L2_ * std::cos(q3));
+    double q2 = beta - gamma;
 
-    // Time-scaling
-    double t_min = 0.0;
-    for (size_t i=0;i<target_q_.size();++i){
-      const double dq = std::fabs(target_q_[i]-current_q_[i]);
-      const double t_i = dq/std::max(1e-6, vel_max_[i]);
-      if (t_i>t_min) t_min=t_i;
+    std::array<double,3> q_math = {wrap_pi(q1), wrap_pi(q2), wrap_pi(q3)};
+
+    // === MATLAB cmd_hw mapping + clamp ===
+    std::array<double,3> cmd_raw_deg{}, cmd_deg{};
+    cmd_deg = mathToCmdClampedDeg(q_math, &cmd_raw_deg);
+
+    // Clamp the target IN COMMAND SPACE, then invert back to math space.
+    // This makes RViz settle at the clamped pose (like hardware).
+    std::array<double,3> q_math_clamped = cmdDegToMathRad(cmd_deg);
+
+    std::vector<double> q = {q_math_clamped[0], q_math_clamped[1], q_math_clamped[2]};
+    if (!within_limits(q)) {
+      RCLCPP_WARN(get_logger(), "Clamped IK violates math joint limits.");
+      return;
     }
+
+    target_q_ = q;
+
+    // Debug: show both math IK and cmd_hw (raw+clamped)
+    {
+      const FKOut ee = fk(q_math[0], q_math[1], q_math[2]);
+      RCLCPP_INFO(get_logger(),
+        "MathIK q=[%.2f, %.2f, %.2f] deg  FK=(%.3f, %.3f, %.3f)",
+        rad2deg(q_math[0]), rad2deg(q_math[1]), rad2deg(q_math[2]),
+        ee.x, ee.y, ee.z);
+
+      RCLCPP_INFO(get_logger(),
+        "cmd_hw raw=[%.2f %.2f %.2f]  clamped=[%.2f %.2f %.2f] deg",
+        cmd_raw_deg[0], cmd_raw_deg[1], cmd_raw_deg[2],
+        cmd_deg[0],     cmd_deg[1],     cmd_deg[2]);
+    }
+
+    // timing
+    double t_min = 0.0;
+    for (size_t i = 0; i < target_q_.size(); ++i) {
+      const double dq = std::fabs(target_q_[i] - current_q_[i]);
+      const double t_i = dq / std::max(1e-6, vel_max_[i]);
+      t_min = std::max(t_min, t_i);
+    }
+
     move_T_ = std::max(0.3, t_min);
     start_q_ = current_q_;
     move_start_ = now();
   }
 
-  void onTimer(){
+  void onTimer()
+  {
     const rclcpp::Time t = now();
-    const double alpha = std::min(1.0,(t-move_start_).seconds()/std::max(1e-6,move_T_));
+    const double alpha = std::min(1.0, (t - move_start_).seconds() / std::max(1e-6, move_T_));
 
-    for(size_t i=0;i<current_q_.size();++i)
-      current_q_[i] = start_q_[i] + alpha*(target_q_[i]-start_q_[i]);
+    for (size_t i = 0; i < current_q_.size(); ++i) {
+      current_q_[i] = start_q_[i] + alpha * (target_q_[i] - start_q_[i]);
+    }
+
+    // Publish JointState in radians, but based on MATLAB cmd_hw(deg) mapping+clamp
+    std::array<double,3> q_math = {current_q_[0], current_q_[1], current_q_[2]};
+    std::array<double,3> cmd_deg = mathToCmdClampedDeg(q_math);
 
     sensor_msgs::msg::JointState js;
     js.header.stamp = t;
     js.name = joint_names_;
-    js.position.resize(current_q_.size());
+    js.position.resize(3);
 
-    // math → display
-    js.position[0] = signs_[0]*current_q_[0] + zero_offs_[0];   // joint_1
-    js.position[1] = signs_[1]*current_q_[1] + zero_offs_[1];   // joint_2 (−q + 90°)
-    js.position[2] = signs_[2]*current_q_[2] + zero_offs_[2];   // joint_3 (−q + 180°)
-    js.position[3] = current_q_[3];                             // gripper L (unchanged)
-    js.position[4] = current_q_[4];                             // gripper R (unchanged)
+    for (int i = 0; i < 3; ++i) {
+      js.position[i] = deg2rad(cmd_deg[i]);  // RViz expects rad
+    }
 
     pub_js_->publish(js);
   }
 
-
-  bool within_limits(const std::vector<double>& q){
-    for(int i=0;i<3;++i)
-      if(q[i] < lim_lower_[i]-1e-9 || q[i] > lim_upper_[i]+1e-9) return false;
+  bool within_limits(const std::vector<double> &q) {
+    for (int i = 0; i < 3; ++i) {
+      if (q[i] < lim_lower_[i] - 1e-9 || q[i] > lim_upper_[i] + 1e-9)
+        return false;
+    }
     return true;
   }
 
@@ -213,17 +231,25 @@ private:
   int elbow_sign_pref_;
   std::vector<std::string> joint_names_;
   std::vector<double> lim_lower_, lim_upper_, vel_max_;
-  // state
+
+  // MATLAB cmd_hw mapping + clamp (DEGREES)
+  std::vector<double> zero_offs_deg_, signs_deg_;
+  std::vector<double> cmd_lower_deg_, cmd_upper_deg_;
+
+  // state (math radians)
   std::vector<double> current_q_, target_q_, start_q_;
-  double move_T_; rclcpp::Time move_start_;
+  double move_T_;
+  rclcpp::Time move_start_;
+
   // ROS I/O
   rclcpp::Publisher<sensor_msgs::msg::JointState>::SharedPtr pub_js_;
   rclcpp::Subscription<std_msgs::msg::Float64MultiArray>::SharedPtr sub_goal_;
   rclcpp::TimerBase::SharedPtr timer_;
 };
 
-int main(int argc,char** argv){
-  rclcpp::init(argc,argv);
+int main(int argc, char **argv)
+{
+  rclcpp::init(argc, argv);
   rclcpp::spin(std::make_shared<PlanarIKRvizNode>());
   rclcpp::shutdown();
   return 0;

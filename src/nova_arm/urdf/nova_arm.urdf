@@ -71,7 +71,7 @@
     </collision>
   </link>
   <joint
-    name="joint_1"
+    name="base_joint"
     type="revolute">
     <origin
       xyz="0 0  0.085"
@@ -116,7 +116,7 @@
     </collision>
   </link>
   <joint
-    name="joint_2"
+    name="shoulder_joint"
     type="revolute">
     <origin
       xyz="0 0 0.066"
@@ -161,7 +161,7 @@
     </collision>
   </link>
   <joint
-    name="joint_3"
+    name="elbow_joint"
     type="revolute">
     <origin
       xyz="0.20 0 0" 
@@ -294,37 +294,5 @@
       effort="50"
       velocity="0.02" />
   </joint>
-
-    <ros2_control name="nova_arm_system" type="system">
-    <hardware>
-      <plugin>gz_ros2_control/GazeboSystem</plugin>
-    </hardware>
-
-    <joint name="joint_1">
-      <command_interface name="position"/>
-      <state_interface name="position"/>
-      <state_interface name="velocity"/>
-    </joint>
-    <joint name="joint_2">
-      <command_interface name="position"/>
-      <state_interface name="position"/>
-      <state_interface name="velocity"/>
-    </joint>
-    <joint name="joint_3">
-      <command_interface name="position"/>
-      <state_interface name="position"/>
-      <state_interface name="velocity"/>
-    </joint>
-    <joint name="joint_4">
-      <command_interface name="position"/>
-      <state_interface name="position"/>
-      <state_interface name="velocity"/>
-    </joint>
-    <joint name="joint_5">
-      <command_interface name="position"/>
-      <state_interface name="position"/>
-      <state_interface name="velocity"/>
-    </joint>
-  </ros2_control>
 
 </robot>
