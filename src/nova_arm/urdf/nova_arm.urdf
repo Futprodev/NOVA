@@ -5,7 +5,7 @@
 <robot
   name="nova_arm">
   <link
-    name="base_link">
+    name="arm_base_link">
     <inertial>
       <origin
         xyz="0.0338 0.018286 -0.0073901"
@@ -71,7 +71,7 @@
     </collision>
   </link>
   <joint
-    name="base_joint"
+    name="arm_base_link"
     type="revolute">
     <origin
       xyz="0 0  0.085"

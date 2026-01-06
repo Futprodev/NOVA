@@ -655,7 +655,7 @@
         <child link="arm_base_link"/>
     </joint>
 
-    <link
+  <link
     name="arm_base_link">
     <inertial>
       <origin
@@ -694,7 +694,6 @@
       </geometry>
     </collision>
   </link>
-
   <link
     name="Link_1">
     <inertial>
@@ -722,15 +721,14 @@
       <geometry><mesh filename="package://nova_arm/meshes/Link_1.STL"/></geometry>
     </collision>
   </link>
-
   <joint
-    name="joint_1"
+    name="arm_base_link"
     type="revolute">
     <origin
       xyz="0 0  0.085"
       rpy="0 0 0" />
     <parent
-      link="arm_base_link" />
+      link="base_link" />
     <child
       link="Link_1" />
     <axis
@@ -741,7 +739,6 @@
       effort="15"
       velocity="1" />
   </joint>
-
   <link
     name="Link_2">
     <inertial>
@@ -770,7 +767,7 @@
     </collision>
   </link>
   <joint
-    name="joint_2"
+    name="shoulder_joint"
     type="revolute">
     <origin
       xyz="0 0 0.066"
@@ -787,7 +784,6 @@
       effort="12"
       velocity="1" />
   </joint>
-
   <link
     name="Link_3">
     <inertial>
@@ -816,7 +812,7 @@
     </collision>
   </link>
   <joint
-    name="joint_3"
+    name="elbow_joint"
     type="revolute">
     <origin
       xyz="0.20 0 0" 
@@ -833,7 +829,6 @@
       effort="10"
       velocity="1.5" />
   </joint>
-
   <link
     name="Link_4">
     <inertial>
@@ -874,13 +869,12 @@
       </geometry>
     </collision>
   </link>
-
   <joint
     name="joint_4"
     type="prismatic">
     <origin
-      xyz="0.17556 0.0023305 0.0"
-      rpy="0 1.5708 0" />
+      xyz="0.17556 0.0027305 -0.012575"
+      rpy="1.5708 0 1.5708" />
     <parent
       link="Link_3" />
     <child
@@ -893,7 +887,6 @@
       effort="50"
       velocity="0.02" />
   </joint>
-
   <link
     name="Link_5">
     <inertial>
@@ -934,13 +927,12 @@
       </geometry>
     </collision>
   </link>
-
   <joint
     name="joint_5"
     type="prismatic">
     <origin
-      xyz="0.17556 0.0022695 0.006"
-      rpy="3.1416 -1.5708 0" />
+      xyz="0.17556 0.0018695 0.012575"
+      rpy="-1.5708 0 -1.5708" />
     <parent
       link="Link_3" />
     <child
@@ -953,5 +945,4 @@
       effort="50"
       velocity="0.02" />
   </joint>
-
 </robot>

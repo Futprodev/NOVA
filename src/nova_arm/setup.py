@@ -23,7 +23,8 @@ setup(
     license='MIT',
     entry_points={
         'console_scripts': [
-            'plant_movement = nova_arm.plant_movement:main'
+            'plant_movement = nova_arm.plant_movement:main',
+            'arm_bridge = nova_arm.arm_bridge_node:main'
         ],
     },
 )
